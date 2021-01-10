@@ -47,3 +47,22 @@ getwd()
 #dat2=read.csv(file.path(path, filename2))
 
 
+# Base R versions:
+
+# filename is defined in the previous video
+# read.csv converts strings to factors
+#dat2 <- read.csv(filename)
+#class(dat2$abb)
+#class(dat2$region)
+
+
+## Reading directly from the internet
+
+url <- "https://raw.githubusercontent.com/rafalab/dslabs/master/inst/extdata/murders.csv"
+dat <- read_csv(url)
+download.file(url, "murders.csv")
+tempfile()
+tmp_filename <- tempfile()
+download.file(url, tmp_filename)
+dat <- read_csv(tmp_filename)
+file.remove(tmp_filename)
