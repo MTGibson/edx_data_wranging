@@ -286,5 +286,30 @@ movielens <- movielens %>%
 Ycounts <- movielens %>% group_by(y) %>% summarize(n=n())%>% select(y,n)
 Hcounts <- movielens %>% group_by(h) %>% summarize(n=n())%>%select(h,n)
 
+library(tidyverse)
+library(gutenbergr)
+library(tidytext)
+options(digits = 3)
 
-    
+gb<-as.data.frame(gutenberg_metadata) %>% filter(!is.na(title))
+
+match<-str_detect(gb$title, "Pride and Prejudice", negate = FALSE)
+sum(match)
+
+gba<-gutenberg_works(
+  title=="Pride and Prejudice",
+  languages = "en",
+  only_text = TRUE,
+  rights = c("Public domain in the USA.", "None"),
+  distinct = TRUE,
+  all_languages = FALSE,
+  only_languages = TRUE
+)
+
+book <- gutenberg_download(1342, mirror='http://www.gutenberg.org/dirs/')
+
+words <- book %>% unnest_tokens(word, text)
+
+words <- words %>% anti_join(stop_words)
+nrow(words)
+
